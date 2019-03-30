@@ -1,0 +1,52 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+    # Only used to simulate a external authentication service and have a way here to obtain a token
+    auth(veterinaryName: String): String!
+    # Return a null object if no dog has been found
+    allDogs(onlyFree: Boolean = false, limit: Int = 500): [Dog!]
+    # Return a null object if no dog has been found
+    dogs(namePrefix: String, limit: Int = 500): [Dog!]
+    # Return a null object if the veterinary do not have any dog associated to him or if access is denied
+    myDogs(accessToken: String!, veterinaryId: Int!): [Dog!]
+    # Return a null object if the veterinary has not been found or if access is denied
+    myInfo(accessToken: String!, veterinaryId: Int!): Veterinary
+}
+
+type Mutation{
+    # Return a null object if the dog/veterinary has not been found or if the dog is already associated to a Veterinary or if access is denied
+    associateDogToMe(accessToken: String!, veterinaryId: Int!, dogId: Int!): Dog
+    # Return a null object if the dog/veterinary has not been found or if the dog is already disassociated from a Veterinary or if access is denied
+    disassociateDogFromMe(accessToken: String!, veterinaryId: Int!, dogId: Int!): Dog
+}
+
+type Subscription {
+    # Return the info about the new association when a Dog is associated to a Veterinary
+    newAssociation: String
+}
+
+# Represent a Veterinary
+type Veterinary{
+    # Unique identifier    
+    id: Int!
+    # Name Dr.xxx
+    name: String!
+    # Popularity (from 1 to 5)
+    popularity: Int!
+    # List of dogs associated to this veterinary
+    dogs: [Dog!]
+}
+
+# Represent a Dog
+type Dog{
+    # Unique identifier    
+    id: Int!
+    # Friendly name
+    name: String!
+    # Veterinary in charge of him
+    veterinary: Veterinary
+}
