@@ -1,6 +1,36 @@
-# Research on GraphQL
+# Table Of Content
 
-<!-- markdownlint-disable MD024 -->
+- [Research on GraphQL](#research-on-graphql)
+  * [Objective](#objective)
+  * [Labs](#labs)
+  * [Security weaknesses](#security-weaknesses)
+    + [Authorization (broken access control)](#authorization--broken-access-control-)
+      - [Issue](#issue)
+      - [Reco](#reco)
+    + [Injection](#injection)
+      - [Issue](#issue-1)
+      - [Reco](#reco-1)
+    + [Resource exhaustion](#resource-exhaustion)
+      - [Issue](#issue-2)
+      - [Reco](#reco-2)
+    + [Exposure of private data](#exposure-of-private-data)
+      - [Issue](#issue-3)
+      - [Reco](#reco-3)
+    + [Exposure of technical information in case of unexpected error](#exposure-of-technical-information-in-case-of-unexpected-error)
+      - [Issue](#issue-4)
+      - [Reco](#reco-4)
+    + [Insecure Direct Object Reference (IDOR)](#insecure-direct-object-reference--idor-)
+      - [Issue](#issue-5)
+    + [Exposure of the API to the wrong sphere of clients](#exposure-of-the-api-to-the-wrong-sphere-of-clients)
+      - [Issue](#issue-6)
+        * [Subscriptions WebSocket endpoint default enabling](#subscriptions-websocket-endpoint-default-enabling)
+        * [Cross-Origin Resource Sharing default enabling](#cross-origin-resource-sharing-default-enabling)
+      - [Reco](#reco-5)
+  * [References used](#references-used)
+    + [GraphQL](#graphql)
+    + [Labs](#labs-1)
+
+# Research on GraphQL
 
 ## Objective
 
@@ -319,7 +349,7 @@ Do not map sensitive information into the type defined into the schema.
 
 As GraphQL materialized how the client will consume the data, the GraphQL must not expose all the data available in the linked storage but ones useful for the client according to the business context of the GraphQL API exposed to them.
 
-### Exposure of tehnical information in case of unexpected error
+### Exposure of technical information in case of unexpected error
 
 [CWE-200](https://cwe.mitre.org/data/definitions/200.html)
 
