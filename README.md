@@ -79,7 +79,7 @@ As GraphQL is based on a single endpoint on which every requests is sent and as 
 
 It's up to the application to implements an authorization logic.
 
-In my labs I have a vulnerability on this point because the verification of the access token do not verify that the token belong to the veterinary passed in **veterinaryId"**
+In my labs I have a vulnerability on this point because the verification of the access token do not verify that the token belong to the veterinary passed in **veterinaryId**
 
 **Example:**
 
@@ -177,7 +177,7 @@ About XSS, it's interesting to note that the GraphQL response reflect the parame
 
 **Example:**
 
-I send this GraphQl request to the query `myInfo(accessToken: String!, veterinaryId: Int!): Veterinary`, i replace the Veterinary identifier (that is an integer) by a String XSS payload:
+I send this GraphQL request to the query `myInfo(accessToken: String!, veterinaryId: Int!): Veterinary`, i replace the Veterinary identifier (that is an integer) by a String XSS payload:
 
 ```javascript
 query sqli {
