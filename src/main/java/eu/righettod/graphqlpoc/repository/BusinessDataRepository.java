@@ -5,8 +5,9 @@ import eu.righettod.graphqlpoc.types.Veterinary;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,11 +33,17 @@ public class BusinessDataRepository {
         //Load the SQLite driver
         Class.forName("org.sqlite.JDBC");
         File dbLocation = new File("target/poc.db");
+        File dbSQLLocation = new File("target/db.sql");
+        if(!dbLocation.getParentFile().exists()){
+            dbLocation.getParentFile().mkdirs();
+        }
         String url = "jdbc:sqlite:" + dbLocation.getAbsolutePath().replace('\\', '/');
         //Open the connection
         this.storageConnection = DriverManager.getConnection(url);
         //Init the DB because the driver do not allow execution on script at connection time
-        List<String> instructions = Files.readAllLines(Paths.get("db.sql"));
+        InputStream is = this.getClass().getResourceAsStream("/db.sql");
+        Files.copy(is,dbSQLLocation.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        List<String> instructions = Files.readAllLines(dbSQLLocation.toPath());
         instructions.forEach(sql -> {
             try {
                 if (sql.trim().length() > 0) {

@@ -40,7 +40,7 @@
 
 ## Labs
 
-A labs has been created in order to study the differents issues, this one take the context of a Veterinary managing healthcare of dogs.
+A labs has been created in order to study the different issues, this one take the context of a Veterinary managing healthcare of dogs.
 
 The labs was developed using [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download/).
 
@@ -57,15 +57,19 @@ There is the labs conditions and assumptions:
 
 * A Veterinary can be associated with 0 or N dogs.
 * A Dog can be associated with 0 or 1 Veterinary.
-* A Veterinary possess a characteric named **Popularity** present into the storage system (database) but it must no be accessed by GraphQL client because it is a sensitive information.
-* The GrapQL data consumption point of view is the Veterinary. Dog information are public.
-* The lab is expliclty a vulnerable application in which several vulnerabilties has been implemented and are identified using the `[VULN]` marker in comments.
-* Regarding the authentication, a fake 3rd party service has been implemented (via a servlet) and return a JWT token contaning the Veterinary name into the token.
+* A Veterinary possess a property named **Popularity** present into the storage system (database) but it must no be accessed by GraphQL client because it is a sensitive information.
+* The GraphQL data consumption point of view is the Veterinary. Dog information are public.
+* The lab is explicitly a vulnerable application in which several vulnerabilities has been implemented and are identified using the `[VULN]` marker in comments.
+* Regarding the authentication, a fake 3rd party service has been implemented (via a servlet) and return a JWT token containing the Veterinary name into the token.
 
-Once started via the lauch configuration present into the project or the command line `mvn spring-boot:run`, the labs is available on these endpoints:
+Once started via the launch configuration present into the project or the command line `mvn spring-boot:run`, the labs is available on these endpoints:
 
 * [GraphiQL](http://localhost:8080/graphiql)
 * [GraphQL](http://localhost:8080/graphql)
+
+To package the application, as a portable jar file, use the command `mvn package` (a pre-built jar file is available [here](https://github.com/righettod/poc-graphql/releases)):
+* The jar file will be created in the folder *target* and will be named *graphql-poc.jar*.
+* Use the command `java -jar graphql-poc.jar` to run the application.
 
 ## Security weaknesses
 
@@ -83,11 +87,22 @@ In my labs I have a vulnerability on this point because the verification of the 
 
 **Example:**
 
-I ask a access token for **Dr Julien** that have the identifier **3** in the storage.
+I ask a access token for **Dr Julien** that have the identifier **3** in the storage by sending this GraphQL request:
 
-```bash
-$ curl http://localhost:8080/auth?vet=Julien
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDQyOTAyfQ.H9A-vXRsiivFGShtdhiR3N2lSDDx-sNqbbJxMRNnExI
+```javascript
+query getAccessToken {
+  auth(veterinaryName: "Julien")
+}
+```
+
+I receive the access token in the following GraphQL response:
+
+```javascript
+{
+  "data": {
+    "auth": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDQyOTAyfQ.H9A-vXRsiivFGShtdhiR3N2lSDDx-sNqbbJxMRNnExI"
+  }
+}
 ```
 
 I send a GraphQL request to the query `myInfo(...)` using the obtained access token BUT I specify the identifier **2** that the one of **Dr Benoit**:
@@ -133,7 +148,7 @@ With GraphQL we passed from a authorization matrix using `Role x Feature` to dat
 
 #### Issue
 
-According to how the information from the GraphQL request query/mutation/subscription are used by the GraphQL server to act on datastores there possbility for injection.
+According to how the information from the GraphQL request query/mutation/subscription are used by the GraphQL server to act on datastores there possibility for injection.
 
 In my labs I have a vulnerability on this point about SQLi in query `dogs(namePrefix: String, limit: Int = 500): [Dog!]` because the parameter **namePrefix** is used in string concatenation to build a SQL query.
 
