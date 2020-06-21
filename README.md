@@ -634,7 +634,7 @@ In my lab it was to set the following options in this [configuration file](src/m
 
 ## Discovery queries
 
-The following queries can be used to get the schema:
+The following queries can be used to get the schema.
 
 Non-detailed:
 
