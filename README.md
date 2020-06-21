@@ -4,7 +4,7 @@
   * [Objective](#objective)
   * [Labs](#labs)
   * [Security weaknesses](#security-weaknesses)
-    + [Authorization (broken access control)](#authorization--broken-access-control-)
+    + [Authorization (broken access control)](#authorization)
       - [Issue](#issue)
       - [Reco](#reco)
     + [Injection](#injection)
@@ -19,13 +19,14 @@
     + [Exposure of technical information in case of unexpected error](#exposure-of-technical-information-in-case-of-unexpected-error)
       - [Issue](#issue-4)
       - [Reco](#reco-4)
-    + [Insecure Direct Object Reference (IDOR)](#insecure-direct-object-reference--idor-)
+    + [Insecure Direct Object Reference (IDOR)](#insecure-direct-object-reference)
       - [Issue](#issue-5)
     + [Exposure of the API to the wrong sphere of clients](#exposure-of-the-api-to-the-wrong-sphere-of-clients)
       - [Issue](#issue-6)
         * [Subscriptions WebSocket endpoint default enabling](#subscriptions-websocket-endpoint-default-enabling)
         * [Cross-Origin Resource Sharing default enabling](#cross-origin-resource-sharing-default-enabling)
       - [Reco](#reco-5)
+  * [Discovery queries](#discovery-queries)
   * [References used](#references-used)
     + [GraphQL](#graphql)
     + [Labs](#labs-1)
@@ -73,7 +74,9 @@ To package the application, as a portable jar file, use the command `mvn package
 
 ## Security weaknesses
 
-### Authorization (broken access control)
+### Authorization
+
+*broken access control*
 
 [CWE-285](https://cwe.mitre.org/data/definitions/285.html)
 
@@ -411,7 +414,7 @@ Return a generic error if an unexpected error is meet, like for example **Query 
 
 See an example into this [class](src/main/java/eu/righettod/graphqlpoc/security/ErrorHandler.java).
 
-### Insecure Direct Object Reference (IDOR)
+### Insecure Direct Object Reference
 
 [CWE-639](https://cwe.mitre.org/data/definitions/639.html)
 
@@ -628,6 +631,131 @@ In my lab it was to set the following options in this [configuration file](src/m
 
 * For CORS: `graphql.servlet.corsEnabled=false`
 * For WebSocket: `graphql.servlet.websocket.enabled=false`
+
+## Discovery queries
+
+The following queries can be used to get the schema:
+
+Non-detailed:
+
+```json
+{
+    __schema {
+        types {
+            name
+            kind
+            description
+            fields {
+                name
+            }
+        }
+    }
+}
+```
+
+Detailed:
+
+```json
+ query IntrospectionQuery {
+  __schema {
+	  queryType {
+		  name
+	  }
+	  mutationType {
+		  name
+	  }
+	  subscriptionType {
+		  name
+	  }
+	  types {
+		  ...FullType
+	  }
+	  directives {
+		  name
+		  description
+		  locations
+		  args {
+			  ...InputValue
+		  }
+	  }
+  }
+}
+
+fragment FullType on __Type {
+  kind
+  name
+  description
+  fields(includeDeprecated: true) {
+	  name
+	  description
+	  args {
+		  ...InputValue
+	  }
+	  type {
+		  ...TypeRef
+	  }
+	  isDeprecated
+	  deprecationReason
+  }
+  inputFields {
+	  ...InputValue
+  }
+  interfaces {
+	  ...TypeRef
+  }
+  enumValues(includeDeprecated: true) {
+	  name
+	  description
+	  isDeprecated
+	  deprecationReason
+  }
+  possibleTypes {
+	  ...TypeRef
+  }
+}
+
+fragment InputValue on __InputValue {
+  name
+  description
+  type {
+	  ...TypeRef
+  }
+  defaultValue
+}
+
+fragment TypeRef on __Type {
+  kind
+  name
+  ofType {
+	  kind
+	  name
+	  ofType {
+		  kind
+		  name
+		  ofType {
+			  kind
+			  name
+			  ofType {
+				  kind
+				  name
+				  ofType {
+					  kind
+					  name
+					  ofType {
+						  kind
+						  name
+						  ofType {
+							  kind
+							  name
+						  }
+					  }
+				  }
+			  }
+		  }
+	  }
+  }
+}
+```
 
 ## References used
 
