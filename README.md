@@ -638,7 +638,7 @@ The following queries can be used to get the schema:
 
 Non-detailed:
 
-```json
+```javascript
 {
     __schema {
         types {
@@ -655,7 +655,7 @@ Non-detailed:
 
 Detailed:
 
-```json
+```javascript
  query IntrospectionQuery {
   __schema {
 	  queryType {
