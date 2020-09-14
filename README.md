@@ -1,35 +1,37 @@
 # Table Of Content
 
+- [Table Of Content](#table-of-content)
 - [Research on GraphQL](#research-on-graphql)
-  * [Objective](#objective)
-  * [Labs](#labs)
-  * [Security weaknesses](#security-weaknesses)
-    + [Authorization (broken access control)](#authorization)
+  - [Objective](#objective)
+  - [Labs](#labs)
+  - [Deploying on Docker](#deploying-on-docker)
+  - [Security weaknesses](#security-weaknesses)
+    - [Authorization](#authorization)
       - [Issue](#issue)
       - [Reco](#reco)
-    + [Injection](#injection)
+    - [Injection](#injection)
       - [Issue](#issue-1)
       - [Reco](#reco-1)
-    + [Resource exhaustion](#resource-exhaustion)
+    - [Resource exhaustion](#resource-exhaustion)
       - [Issue](#issue-2)
       - [Reco](#reco-2)
-    + [Exposure of private data](#exposure-of-private-data)
+    - [Exposure of private data](#exposure-of-private-data)
       - [Issue](#issue-3)
       - [Reco](#reco-3)
-    + [Exposure of technical information in case of unexpected error](#exposure-of-technical-information-in-case-of-unexpected-error)
+    - [Exposure of technical information in case of unexpected error](#exposure-of-technical-information-in-case-of-unexpected-error)
       - [Issue](#issue-4)
       - [Reco](#reco-4)
-    + [Insecure Direct Object Reference (IDOR)](#insecure-direct-object-reference)
+    - [Insecure Direct Object Reference](#insecure-direct-object-reference)
       - [Issue](#issue-5)
-    + [Exposure of the API to the wrong sphere of clients](#exposure-of-the-api-to-the-wrong-sphere-of-clients)
+    - [Exposure of the API to the wrong sphere of clients](#exposure-of-the-api-to-the-wrong-sphere-of-clients)
       - [Issue](#issue-6)
-        * [Subscriptions WebSocket endpoint default enabling](#subscriptions-websocket-endpoint-default-enabling)
-        * [Cross-Origin Resource Sharing default enabling](#cross-origin-resource-sharing-default-enabling)
+        - [Subscriptions WebSocket endpoint default enabling](#subscriptions-websocket-endpoint-default-enabling)
+        - [Cross-Origin Resource Sharing default enabling](#cross-origin-resource-sharing-default-enabling)
       - [Reco](#reco-5)
-  * [Discovery queries](#discovery-queries)
-  * [References used](#references-used)
-    + [GraphQL](#graphql)
-    + [Labs](#labs-1)
+  - [Discovery queries](#discovery-queries)
+  - [References used](#references-used)
+    - [GraphQL](#graphql)
+    - [Labs](#labs-1)
 
 # Research on GraphQL
 
@@ -71,6 +73,20 @@ Once started via the launch configuration present into the project or the comman
 To package the application, as a portable jar file, use the command `mvn package` (a pre-built jar file is available [here](https://github.com/righettod/poc-graphql/releases)):
 * The jar file will be created in the folder *target* and will be named *graphql-poc.jar*.
 * Use the command `java -jar graphql-poc.jar` to run the application.
+
+## Deploying on Docker
+
+In order to deploy the application in a docker container follow the steps:
+
+1. Make sure you have `docker` installed.
+2. `git clone` the repository.
+3. Change into the cloned directory.
+4. Build the docker iamge using `docker build -t poc-graphql .`.
+5. Now an image called "poc-graphql:latest" has been created on your machine.
+6. Run the container using `docker run -p 8080:8080 poc-graphql:latest`
+7. Access the lab using the following endpoints:
+   * [GraphiQL](http://localhost:8080/graphiql)
+   * [GraphQL](http://localhost:8080/graphql) 
 
 ## Security weaknesses
 
