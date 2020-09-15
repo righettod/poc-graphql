@@ -1,3 +1,5 @@
+![Build and deploy the image](https://github.com/righettod/poc-graphql/workflows/Build%20and%20deploy%20the%20image/badge.svg?branch=master)
+
 # Table Of Content
 
 - [Table Of Content](#table-of-content)
@@ -75,6 +77,8 @@ To package the application, as a portable jar file, use the command `mvn package
 * Use the command `java -jar graphql-poc.jar` to run the application.
 
 ## Deploying on Docker
+
+> The image is published every day on [DockerHub](https://hub.docker.com/r/righettod/poc-graphql)
 
 In order to deploy the application in a docker container follow the steps:
 
