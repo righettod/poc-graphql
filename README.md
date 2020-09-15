@@ -81,8 +81,8 @@ In order to deploy the application in a docker container follow the steps:
 1. Make sure you have `docker` installed.
 2. `git clone` the repository.
 3. Change into the cloned directory.
-4. Build the docker iamge using `docker build -t poc-graphql .`.
-5. Now an image called "poc-graphql:latest" has been created on your machine.
+4. Build the docker image using `docker build -t poc-graphql .`
+5. Now an image called **poc-graphql:latest** has been created on your machine.
 6. Run the container using `docker run -p 8080:8080 poc-graphql:latest`
 7. Access the lab using the following endpoints:
    * [GraphiQL](http://localhost:8080/graphiql)
