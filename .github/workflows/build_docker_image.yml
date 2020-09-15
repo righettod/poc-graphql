@@ -1,0 +1,21 @@
+name: Build and deploy the image
+on: 
+  push:
+    branches: 
+      - master
+  schedule:
+    - cron: '0 8 * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v2
+      - name: Build the image   
+        run: docker build . --file Dockerfile --tag poc-graphql:latest
+      - name: Publish image to DockerHub
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: righettod/poc-graphql
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}   
