@@ -218,7 +218,7 @@ About XSS, it's interesting to note that the GraphQL response reflect the parame
 I send this GraphQL request to the query `myInfo(accessToken: String!, veterinaryId: Int!): Veterinary`, i replace the Veterinary identifier (that is an integer) by a String XSS payload:
 
 ```javascript
-query sqli {
+query xss {
   myInfo(accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb2MiLCJzdWIiOiJKdWxpZW4iLCJpc3MiOiJBdXRoU3lzdGVtIiwiZXhwIjoxNTQ2NDU1MDQwfQ.P87Ef-GM99a_vzzbUf2RprUYxFgxgPnSukaVnz22BJ0",
     veterinaryId: "<script>alert('XSS')</script>") {
     id
